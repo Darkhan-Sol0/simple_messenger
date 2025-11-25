@@ -1,0 +1,14 @@
+server:
+  server_address: "0.0.0.0:8080"
+
+postgresql:
+  pg_host: "postgres"
+  pg_port: "5432"
+  pg_database: "db"
+  pg_user: "user"
+  pg_password: "password"
+
+mongodb:
+  mongo_name: "mongodb"
+  mongo_host: "mongodb"
+  mongo_port: "27017"
