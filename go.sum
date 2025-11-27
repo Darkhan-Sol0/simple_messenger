@@ -3,10 +3,14 @@ github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
 github.com/Darkhan-Sol0/simple_qb v0.0.0-20251121054338-57232da71a01 h1:yh7iO18aWANrXbgL/tW8QolFNHiiXPgSotmZksHuUyk=
 github.com/Darkhan-Sol0/simple_qb v0.0.0-20251121054338-57232da71a01/go.mod h1:VanmHTSQAibO6mha3vfaS+6mzTRIABrt83GHwTeTlSI=
+github.com/Darkhan-Sol0/simple_qb v0.0.0-20251127054442-afc40b329397 h1:CxTtz2Q2/dvLaDVcp1tp93QUBO1Yc/H812s2U5/O1GY=
+github.com/Darkhan-Sol0/simple_qb v0.0.0-20251127054442-afc40b329397/go.mod h1:VanmHTSQAibO6mha3vfaS+6mzTRIABrt83GHwTeTlSI=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/golang-jwt/jwt/v5 v5.3.0 h1:pv4AsKCKKZuqlgs5sUmn4x8UlGa0kEVt/puTpKx9vvo=
+github.com/golang-jwt/jwt/v5 v5.3.0/go.mod h1:fxCRLWMO43lRc8nhHWY6LGqRcf+1gQWArsqaEUEa5bE=
 github.com/golang/snappy v1.0.0 h1:Oy607GVXHs7RtbggtPBnr2RmDArIsAefDwvrdWvRhGs=
 github.com/golang/snappy v1.0.0/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=

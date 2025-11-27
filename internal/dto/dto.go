@@ -9,7 +9,7 @@ type (
 	}
 
 	UUIDChat struct {
-		UUIDChat string `json:"chat_uuid" db:"chat_uuid"`
+		UUIDChat string `json:"chat_uuid" db:"uuid_chat"`
 	}
 
 	SendMessange struct {

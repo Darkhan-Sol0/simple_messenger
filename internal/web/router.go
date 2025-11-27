@@ -25,4 +25,6 @@ func New(service service.Service) Routing {
 func (r *routing) RegisterRoutes(e *echo.Echo) {
 	e.GET("/health", r.Hello)
 	e.POST("/chat", r.NewChat)
+	e.GET("/chats", r.GetAllChats)
+	e.GET("/mychats", r.GetAllMyChats)
 }
