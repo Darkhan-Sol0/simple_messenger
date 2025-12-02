@@ -27,4 +27,7 @@ func (r *routing) RegisterRoutes(e *echo.Echo) {
 	e.POST("/chat", r.NewChat)
 	e.GET("/chats", r.GetAllChats)
 	e.GET("/mychats", r.GetAllMyChats)
+
+	e.POST("/send", r.SendMessange)
+	e.GET("/get", r.GetMessange)
 }

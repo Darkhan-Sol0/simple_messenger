@@ -9,6 +9,8 @@ postgresql:
   pg_password: "password"
 
 mongodb:
-  mongo_name: "mongodb"
+  mongo_database: "mongodb"
   mongo_host: "mongodb"
   mongo_port: "27017"
+  mongo_user: "user"
+  mongo_password: "password"

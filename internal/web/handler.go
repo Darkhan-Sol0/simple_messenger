@@ -44,3 +44,29 @@ func (r *routing) GetAllMyChats(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, map[string]any{"data": res})
 }
+
+func (r *routing) SendMessange(ctx echo.Context) error {
+	var data dto.SendMessange
+	err := ctx.Bind(&data)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+	res, err := r.service.Messenger().SendMessange(ctx.Request().Context(), &data)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+	return ctx.JSON(http.StatusOK, map[string]any{"data": res})
+}
+
+func (r *routing) GetMessange(ctx echo.Context) error {
+	var data dto.UUIDChat
+	err := ctx.Bind(&data)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+	res, err := r.service.Messenger().GetMessange(ctx.Request().Context(), &data)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+	return ctx.JSON(http.StatusOK, map[string]any{"data": res})
+}

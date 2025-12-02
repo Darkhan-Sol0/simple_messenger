@@ -31,9 +31,7 @@ func New(client *pgxpool.Pool) Storage {
 }
 
 func (pg *pg_repo) CreateNewChat(ctx context.Context, data *dto.NewChatDTO) (*dto.UUIDChat, error) {
-	qb := simple_qb.New(table, *data, nil)
-	query, args := qb.Insert() //uuid_chat
-	query = fmt.Sprintf("%s RETURNING uuid_chat", query)
+	query, args := simple_qb.New(table).Insert(data).Returning("uuid_chat").Generate()
 	res := dto.UUIDChat{}
 	err := pg.client.QueryRow(ctx, query, args...).Scan(&res.UUIDChat)
 	if err != nil {
@@ -44,40 +42,36 @@ func (pg *pg_repo) CreateNewChat(ctx context.Context, data *dto.NewChatDTO) (*dt
 }
 
 func (pg *pg_repo) GetAllChats(ctx context.Context) ([]dto.UUIDChat, error) {
-	qb := simple_qb.New(table, dto.UUIDChat{}, nil)
-	query, _ := qb.Select()
+	query, _ := simple_qb.New(table).Select(dto.UUIDChat{}).Generate()
 	fmt.Println(query)
 	rows, err := pg.client.Query(ctx, query)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error: %w", err)
 	}
 	defer rows.Close()
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("%w", err)
+		return nil, fmt.Errorf("error: %w", err)
 	}
 	dataOut, err := pgx.CollectRows(rows, pgx.RowToStructByName[dto.UUIDChat])
 	if err != nil {
-		return nil, fmt.Errorf("%w", err)
+		return nil, fmt.Errorf("error: %w", err)
 	}
 	return dataOut, nil
 }
 
 func (pg *pg_repo) GetAllMyChats(ctx context.Context, data *dto.UUIDUser) ([]dto.UUIDChat, error) {
-	filter := simple_qb.NewParam(simple_qb.NewNode("uuid_user_1", "eq", data.UUID), simple_qb.NewNodeOr("uuid_user_2", "eq", data.UUID))
-	qb := simple_qb.New(table, dto.UUIDChat{}, filter)
-	query, args := qb.Select()
-	fmt.Println(query, args)
+	query, args := simple_qb.New(table).Select(dto.UUIDChat{}).Params(simple_qb.NewParam("uuid_user_1", "eq", data.UUID), simple_qb.NewOrParam("uuid_user_2", "eq", data.UUID)).Generate()
 	rows, err := pg.client.Query(ctx, query, args...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error: %w", err)
 	}
 	defer rows.Close()
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("%w", err)
+		return nil, fmt.Errorf("error: %w", err)
 	}
 	dataOut, err := pgx.CollectRows(rows, pgx.RowToStructByName[dto.UUIDChat])
 	if err != nil {
-		return nil, fmt.Errorf("%w", err)
+		return nil, fmt.Errorf("error: %w", err)
 	}
 	return dataOut, nil
 }

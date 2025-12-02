@@ -1,13 +1,14 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS chats (
-    uuid_chat UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    uuid_user_1 TEXT,
-    uuid_user_2 TEXT
+    chat_uuid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_uuid_1 TEXT,
+    user_uuid_2 TEXT,
+    date_created TIMESTAMPZ
 );
 
-CREATE INDEX IF NOT EXISTS idx_uuid_user_1 ON chats(uuid_user_1);
-CREATE INDEX IF NOT EXISTS idx_uuid_user_2 ON chats(uuid_user_2);
+CREATE INDEX IF NOT EXISTS idx_user_uuid_1 ON chats(user_uuid_1);
+CREATE INDEX IF NOT EXISTS idx_user_uuid_2 ON chats(user_uuid_2);
 
 -- +goose StatementEnd
 

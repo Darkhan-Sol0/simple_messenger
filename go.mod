@@ -3,7 +3,7 @@ module simple_messenger
 go 1.25.4
 
 require (
-	github.com/Darkhan-Sol0/simple_qb v0.0.0-20251127054442-afc40b329397
+	github.com/Darkhan-Sol0/simple_qb v0.0.0-20251201051523-3b4282ed8b18
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/labstack/echo/v4 v4.13.4

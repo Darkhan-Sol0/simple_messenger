@@ -22,8 +22,11 @@ type (
 		} `yaml:"postgresql"`
 
 		MongoConf struct {
-			Host string `yaml:"mongo_host"`
-			Port string `yaml:"mongo_port"`
+			Database string `yaml:"mongo_database"`
+			Host     string `yaml:"mongo_host"`
+			Port     string `yaml:"mongo_port"`
+			User     string `yaml:"mongo_user"`
+			Password string `yaml:"mongo_password"`
 		} `yaml:"mongodb"`
 	}
 
@@ -38,6 +41,9 @@ type (
 
 		GetMongoPort() string
 		GetMongoHost() string
+		GetMongoUser() string
+		GetMongoPassword() string
+		GetMongoDatabase() string
 	}
 )
 
@@ -84,6 +90,19 @@ func (c *webConfig) GetPGPassword() string {
 func (c *webConfig) GetMongoPort() string {
 	return c.MongoConf.Port
 }
+
 func (c *webConfig) GetMongoHost() string {
 	return c.MongoConf.Host
+}
+
+func (c *webConfig) GetMongoUser() string {
+	return c.MongoConf.User
+}
+
+func (c *webConfig) GetMongoPassword() string {
+	return c.MongoConf.Password
+}
+
+func (c *webConfig) GetMongoDatabase() string {
+	return c.MongoConf.Database
 }
