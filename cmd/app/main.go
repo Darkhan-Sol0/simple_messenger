@@ -1,7 +1,12 @@
 package main
 
-import "simple_messenger/internal/server"
+import (
+	"log"
+	"simple_messenger/internal/server"
+)
 
 func main() {
-	server.New().Run()
+	if err := server.New().Run(); err != nil {
+		log.Fatalf("error: %s", err.Error())
+	}
 }

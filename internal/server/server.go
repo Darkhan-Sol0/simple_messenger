@@ -18,52 +18,52 @@ import (
 
 type (
 	server struct {
-		cfg config.Config
-		db  database.Database
+		httpDriver *echo.Echo
+		cfg        config.Config
+		database   database.Database
+		service    service.Service
+		router     web.Routing
 	}
 
 	Server interface {
-		Run() error
+		Run() (err error)
 	}
 )
 
 func New() Server {
 	return &server{
-		cfg: config.GetConfig(),
+		httpDriver: echo.New(),
+		cfg:        config.GetConfig(),
 	}
 }
 
-func (s *server) start(e *echo.Echo) {
+func (s *server) start() {
 	log.Printf("Starting server at %s\n", s.cfg.GetAddress())
-	if err := e.Start(s.cfg.GetAddress()); err != nil && err != http.ErrServerClosed {
+	if err := s.httpDriver.Start(s.cfg.GetAddress()); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
 
-func (s *server) shutdown(e *echo.Echo, ctx context.Context) {
+func (s *server) shutdown(ctx context.Context) {
 	shutdownCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	log.Printf("Shutting down the server...")
-	if err := e.Shutdown(shutdownCtx); err != nil {
+	if err := s.httpDriver.Shutdown(shutdownCtx); err != nil {
 		log.Printf("Graceful shutdown failed with error: %v\n", err)
 	}
 	log.Println("Server gracefully stopped.")
 }
 
-func (s *server) Run() (err error) {
-	e := echo.New()
+func (s *server) Run() error {
 	ctx, stop := context.WithCancel(context.Background())
 	defer stop()
-	s.db, err = database.New(ctx, s.cfg)
+	err := s.connect(ctx)
 	if err != nil {
-		log.Fatalf("error connect database: %v\n", err)
+		return err
 	}
-	defer s.db.Close(ctx)
-	service := service.New(s.db)
-	r := web.New(service)
-	r.RegisterRoutes(e)
+	defer s.closeDatabase(ctx)
 	go func() {
-		s.start(e)
+		s.start()
 		stop()
 	}()
 	quit := make(chan os.Signal, 1)
@@ -74,7 +74,37 @@ func (s *server) Run() (err error) {
 	case <-quit:
 		log.Println("Received termination signal, stopping server...")
 	}
-	s.shutdown(e, ctx)
-
+	s.shutdown(ctx)
 	return nil
+}
+
+func (s *server) connect(ctx context.Context) error {
+	err := s.initDatabase(ctx)
+	if err != nil {
+		return err
+	}
+	s.connectService()
+	s.connectWeb()
+	return nil
+}
+
+func (s *server) initDatabase(ctx context.Context) (err error) {
+	s.database, err = database.New(ctx, s.cfg)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *server) closeDatabase(ctx context.Context) {
+	s.database.Close(ctx)
+}
+
+func (s *server) connectService() {
+	s.service = service.New(s.database)
+}
+
+func (s *server) connectWeb() {
+	s.router = web.New(s.service)
+	s.router.RegisterRoutes(s.httpDriver)
 }
