@@ -2,23 +2,23 @@ package database
 
 import (
 	"context"
-	"simple_messenger/internal/config"
-	"simple_messenger/internal/datasource/database/mongodb"
-	"simple_messenger/internal/datasource/database/postgresql"
+	"fmt"
+	"simple_message/internal/config"
+	"simple_message/internal/datasource/database/postgresql"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"go.mongodb.org/mongo-driver/v2/mongo"
+	"github.com/redis/go-redis/v9"
 )
 
 type (
 	database struct {
 		postgres *pgxpool.Pool
-		mongo    *mongo.Client
+		redis    *redis.Client
 	}
 
 	Database interface {
 		GetPostgress() *pgxpool.Pool
-		GetMongo() *mongo.Client
 		Close(ctx context.Context)
 	}
 )
@@ -28,13 +28,16 @@ func New(ctx context.Context, cfg config.Config) (Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	mg, err := mongodb.ConnectMongo(ctx, cfg)
+
+	re, err := NewRedisClientWithPing(ctx, cfg)
 	if err != nil {
+		pg.Close()
 		return nil, err
 	}
+
 	return &database{
 		postgres: pg,
-		mongo:    mg,
+		redis:    re,
 	}, nil
 }
 
@@ -42,11 +45,34 @@ func (db *database) GetPostgress() *pgxpool.Pool {
 	return db.postgres
 }
 
-func (db *database) GetMongo() *mongo.Client {
-	return db.mongo
-}
-
 func (db *database) Close(ctx context.Context) {
 	db.GetPostgress().Close()
-	db.GetMongo().Disconnect(ctx)
+}
+
+func NewRedisClient(cfg config.Config) (*redis.Client, error) {
+	// Создаем клиент Redis
+	addr := fmt.Sprintf("%s:%s", cfg.GetRedisHost(), cfg.GetRedisPort())
+	db, _ := strconv.Atoi(cfg.GetRedisDB())
+
+	client := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: cfg.GetRedisPassword(),
+		DB:       db,
+	})
+
+	return client, nil
+}
+
+func NewRedisClientWithPing(ctx context.Context, cfg config.Config) (*redis.Client, error) {
+	client, err := NewRedisClient(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	// Проверяем подключение
+	if err := client.Ping(ctx).Err(); err != nil {
+		return nil, fmt.Errorf("redis connection failed: %v", err)
+	}
+
+	return client, nil
 }

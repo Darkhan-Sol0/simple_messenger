@@ -1,34 +1,34 @@
 package service
 
 import (
-	"simple_messenger/internal/datasource/database"
-	"simple_messenger/internal/service/chat"
-	"simple_messenger/internal/service/messenger"
+	"simple_message/internal/datasource/database"
+	cuc "simple_message/internal/service/chats/usecase"
+	uuc "simple_message/internal/service/users/usecase"
 )
 
 type (
 	service struct {
-		chat      chat.Chat
-		messenger messenger.Messenger
+		user uuc.UserUsecase
+		chat cuc.ChatUsecase
 	}
 
 	Service interface {
-		Chat() chat.Chat
-		Messenger() messenger.Messenger
+		User() uuc.UserUsecase
+		Chat() cuc.ChatUsecase
 	}
 )
 
 func New(db database.Database) Service {
 	return &service{
-		chat:      chat.New(db),
-		messenger: messenger.New(db),
+		user: uuc.New(),
+		chat: cuc.New(),
 	}
 }
 
-func (s *service) Chat() chat.Chat {
-	return s.chat
+func (s *service) User() uuc.UserUsecase {
+	return s.user
 }
 
-func (s *service) Messenger() messenger.Messenger {
-	return s.messenger
+func (s *service) Chat() cuc.ChatUsecase {
+	return s.chat
 }

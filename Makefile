@@ -11,8 +11,8 @@ PACKAGE =\
 		github.com/ilyakaznacheev/cleanenv\
 		github.com/joho/godotenv\
 		github.com/golang-jwt/jwt/v5\
-		go.mongodb.org/mongo-driver/v2/mongo\
 		github.com/Darkhan-Sol0/simple_qb\
+		github.com/redis/go-redis/v9\
 
 .PHONY = all, run, build, build_run, clean, mod, get
 

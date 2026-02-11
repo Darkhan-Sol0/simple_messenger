@@ -21,13 +21,13 @@ type (
 			Password string `yaml:"pg_password"`
 		} `yaml:"postgresql"`
 
-		MongoConf struct {
-			Database string `yaml:"mongo_database"`
-			Host     string `yaml:"mongo_host"`
-			Port     string `yaml:"mongo_port"`
-			User     string `yaml:"mongo_user"`
-			Password string `yaml:"mongo_password"`
-		} `yaml:"mongodb"`
+		RedisConf struct {
+			Host     string `yaml:"redis_host"`
+			Port     string `yaml:"redis_port"`
+			Database string `yaml:"redis_database"`
+			// Username string `yaml:"redis_user"`
+			Password string `yaml:"redis_password"`
+		} `yaml:"redis"`
 	}
 
 	Config interface {
@@ -39,11 +39,10 @@ type (
 		GetPGUser() string
 		GetPGPassword() string
 
-		GetMongoPort() string
-		GetMongoHost() string
-		GetMongoUser() string
-		GetMongoPassword() string
-		GetMongoDatabase() string
+		GetRedisHost() string
+		GetRedisPort() string
+		GetRedisDB() string
+		GetRedisPassword() string
 	}
 )
 
@@ -87,22 +86,18 @@ func (c *webConfig) GetPGPassword() string {
 	return c.PgConf.Password
 }
 
-func (c *webConfig) GetMongoPort() string {
-	return c.MongoConf.Port
+func (c *webConfig) GetRedisHost() string {
+	return ""
 }
 
-func (c *webConfig) GetMongoHost() string {
-	return c.MongoConf.Host
+func (c *webConfig) GetRedisPort() string {
+	return ""
 }
 
-func (c *webConfig) GetMongoUser() string {
-	return c.MongoConf.User
+func (c *webConfig) GetRedisDB() string {
+	return ""
 }
 
-func (c *webConfig) GetMongoPassword() string {
-	return c.MongoConf.Password
-}
-
-func (c *webConfig) GetMongoDatabase() string {
-	return c.MongoConf.Database
+func (c *webConfig) GetRedisPassword() string {
+	return ""
 }

@@ -1,7 +1,7 @@
 package web
 
 import (
-	"simple_messenger/internal/service"
+	"simple_message/internal/service"
 
 	"github.com/labstack/echo/v4"
 )
@@ -23,11 +23,5 @@ func New(service service.Service) Routing {
 }
 
 func (r *routing) RegisterRoutes(e *echo.Echo) {
-	e.GET("/health", r.Hello)
-	e.POST("/chat", r.NewChat)
-	e.GET("/chats", r.GetAllChats)
-	e.GET("/mychats", r.GetAllMyChats)
 
-	e.POST("/send", r.SendMessange)
-	e.GET("/get", r.GetMessange)
 }

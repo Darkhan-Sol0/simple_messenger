@@ -8,9 +8,9 @@ postgresql:
   pg_user: "user"
   pg_password: "password"
 
-mongodb:
-  mongo_database: "mongodb"
-  mongo_host: "mongodb"
-  mongo_port: "27017"
-  mongo_user: "user"
-  mongo_password: "password"
+redis:
+  redis_host: ""
+  redis_port: ""
+  redis_database: ""
+  redis_user: ""
+  redis_password: ""

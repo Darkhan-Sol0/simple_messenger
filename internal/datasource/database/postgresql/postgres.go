@@ -3,7 +3,7 @@ package postgresql
 import (
 	"context"
 	"fmt"
-	"simple_messenger/internal/config"
+	"simple_message/internal/config"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

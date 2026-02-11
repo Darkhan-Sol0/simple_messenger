@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"simple_messenger/internal/server"
+	"simple_message/internal/server"
 )
 
 func main() {
